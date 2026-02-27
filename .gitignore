@@ -40,3 +40,8 @@ Builds/
 *.ipa
 *.exe
 *.zip
+
+# === Node (for MCP Server~/) ===
+Packages/com.gamelovers.mcp-unity/
+Packages/Coplay/
+**/node_modules/
