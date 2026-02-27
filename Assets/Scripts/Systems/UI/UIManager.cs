@@ -18,11 +18,16 @@ namespace SnakePrototype.Systems.UI
         private Button _respawnButton;
         private Button _quitButton;
 
-        // Phase 1: Main Menu
+        // Phase 1: Main Menu & Pause
         private VisualElement _mainMenu;
         private Button _menuPlayButton;
         private Button _menuHighscoresButton;
         private Button _menuQuitButton;
+
+        private VisualElement _pauseOverlay;
+        private Button _pauseResumeButton;
+        private Button _pauseOptionsButton;
+        private Button _pauseQuitButton;
 
         // Phase 3 Alert Meter
         private VisualElement _alertMeterRoot;
@@ -164,6 +169,27 @@ namespace SnakePrototype.Systems.UI
             if (_menuPlayButton != null) _menuPlayButton.clicked += OnMenuPlayClicked;
             if (_menuHighscoresButton != null) _menuHighscoresButton.clicked += OnMenuHighscoresClicked;
             if (_menuQuitButton != null) _menuQuitButton.clicked += OnQuitClicked;
+
+            // Pause Menu Integration
+            _pauseOverlay = _root?.Q<VisualElement>("PauseOverlay");
+            _pauseResumeButton = _pauseOverlay?.Q<Button>("ResumeButton");
+            _pauseOptionsButton = _pauseOverlay?.Q<Button>("OptionsButton");
+            _pauseQuitButton = _pauseOverlay?.Q<Button>("QuitButton");
+
+            if (_pauseResumeButton != null) _pauseResumeButton.clicked += OnResumeClicked;
+            if (_pauseOptionsButton != null) _pauseOptionsButton.clicked += OnOptionsClicked;
+            if (_pauseQuitButton != null) _pauseQuitButton.clicked += OnQuitClicked;
+        }
+
+        private void OnOptionsClicked()
+        {
+            Debug.Log("Options Clicked - Feature Pending");
+        }
+
+        private void OnResumeClicked()
+        {
+            Debug.Log("Resume Session Clicked");
+            GameEventManager.Publish(new PauseInputEvent());
         }
 
         private void OnBeginClicked()
@@ -277,27 +303,33 @@ namespace SnakePrototype.Systems.UI
 
             if (e.NewState == GameState.Paused)
             {
-                if (_alertOverlay != null)
-                {
-                    _alertOverlay.style.display = DisplayStyle.Flex;
-                    if (_alertHeader != null) _alertHeader.text = "PAUSED";
-                    if (_alertSubHeader != null) _alertSubHeader.text = "MISSION ON HOLD";
-                    if (_respawnButton != null) _respawnButton.text = "RESUME";
-                }
+                if (_pauseOverlay != null) _pauseOverlay.style.display = DisplayStyle.Flex;
+                if (_alertOverlay != null) _alertOverlay.style.display = DisplayStyle.None;
             }
             if (e.NewState == GameState.GameOver)
             {
                 if (_alertOverlay != null)
                 {
                     _alertOverlay.style.display = DisplayStyle.Flex;
-                    if (_alertHeader != null) _alertHeader.text = "SYSTEM FAILURE";
-                    if (_alertSubHeader != null) _alertSubHeader.text = "GAME OVER";
-                    if (_respawnButton != null) _respawnButton.text = "RETRY";
+                    if (_pauseOverlay != null) _pauseOverlay.style.display = DisplayStyle.None;
+
+                    var scoreManager = ServiceLocator.Get<ScoreManager>();
+                    var levelManager = ServiceLocator.Get<LevelFlowManager>();
+
+                    int finalScore = scoreManager?.CurrentScore ?? 0;
+                    int finalLevel = levelManager?.CurrentLevel ?? 0;
+
+                    if (_alertHeader != null) _alertHeader.text = "CRITICAL FAILURE";
+                    if (_alertSubHeader != null) 
+                        _alertSubHeader.text = $"FINAL SCORE: {finalScore}\nSECTOR REACHED: {finalLevel:D2}";
+                    
+                    if (_respawnButton != null) _respawnButton.text = "RETRY_SEQUENCE";
                 }
             }
             if (e.NewState == GameState.Playing)
             {
                 if (_alertOverlay != null) _alertOverlay.style.display = DisplayStyle.None;
+                if (_pauseOverlay != null) _pauseOverlay.style.display = DisplayStyle.None;
             }
         }
 

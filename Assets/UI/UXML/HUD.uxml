@@ -8,8 +8,24 @@
             <ui:ProgressBar name="EnergyBar" title="ENERGY" value="0.5" class="hud-bar" />
         </ui:VisualElement>
 
-        <ui:VisualElement name="AlertOverlay" class="alert-overlay" style="display: none;">
-            <ui:Label text="⚠️ DETECTION DETECTED ⚠️" class="alert-text" />
+        <ui:VisualElement name="HUDContainer" class="hud-container">
+            <!-- HUD elements will be added here or scaled -->
         </ui:VisualElement>
+
+        <ui:VisualElement name="AlertOverlay" class="alert-overlay" style="display: none;">
+            <ui:VisualElement class="alert-container" style="align-items: center;">
+                <ui:Label name="AlertHeader" text="⚠️ DETECTION DETECTED ⚠️" class="alert-text" />
+                <ui:Label name="AlertSubHeader" text="EVADE IMMEDIATELY" class="sub-text" />
+                <ui:VisualElement class="button-container">
+                    <ui:Button name="RespawnButton" text="RETRY" class="hud-button" />
+                    <ui:Button name="QuitButton" text="QUIT" class="hud-button" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- Use absolute positioning for overlays -->
+        <ui:Template name="PauseTemplate" src="Pause.uxml" />
+        <ui:Instance template="PauseTemplate" name="PauseOverlay" style="display: none; position: absolute; width: 100%; height: 100%;" />
+
     </ui:VisualElement>
 </ui:UXML>

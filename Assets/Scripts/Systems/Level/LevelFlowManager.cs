@@ -14,6 +14,7 @@ namespace SnakePrototype.Systems.Level
         public enum FlowState { Idle, Intro, Running }
         private FlowState _state = FlowState.Idle;
         private int _currentLevel = 1;
+        public int CurrentLevel => _currentLevel;
         private int _collectedCores = 0;
         private int _currentPaletteSeed = -1;
         private LevelConfig _config;
