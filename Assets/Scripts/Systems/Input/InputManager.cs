@@ -125,12 +125,19 @@ namespace SnakePrototype.Systems.Input
         {
             _moveAction.Disable();
             _pauseAction.Disable();
+            _confirmAction.Disable();
+            _cancelAction.Disable();
             
             _moveAction.performed -= OnMove;
             _pauseAction.performed -= OnPause;
+            _confirmAction.performed -= OnConfirm;
             
             _moveAction.Dispose();
             _pauseAction.Dispose();
+            _confirmAction.Dispose();
+            _cancelAction.Dispose();
+
+            GameEventManager.RemoveListener<GameStateChangedEvent>(OnGameStateChanged);
         }
     }
 }
