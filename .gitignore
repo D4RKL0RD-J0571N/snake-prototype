@@ -45,3 +45,7 @@ Builds/
 Packages/com.gamelovers.mcp-unity/
 Packages/Coplay/
 **/node_modules/
+
+# === AI / Agent ===
+.agent/
+.windsurf/
