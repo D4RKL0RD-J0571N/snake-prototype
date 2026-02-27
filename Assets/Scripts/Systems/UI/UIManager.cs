@@ -18,6 +18,12 @@ namespace SnakePrototype.Systems.UI
         private Button _respawnButton;
         private Button _quitButton;
 
+        // Phase 1: Main Menu
+        private VisualElement _mainMenu;
+        private Button _menuPlayButton;
+        private Button _menuHighscoresButton;
+        private Button _menuQuitButton;
+
         // Phase 3 Alert Meter
         private VisualElement _alertMeterRoot;
         private VisualElement _meterFill;
@@ -145,9 +151,19 @@ namespace SnakePrototype.Systems.UI
             _paletteRow = _levelIntro?.Q<VisualElement>("PalettePreview");
             _beginButton = _levelIntro?.Q<Button>("BeginButton");
 
+            // Main Menu
+            _mainMenu = _root?.Q<VisualElement>("MainMenu");
+            _menuPlayButton = _mainMenu?.Q<Button>("PlayButton");
+            _menuHighscoresButton = _mainMenu?.Q<Button>("HighscoresButton");
+            _menuQuitButton = _mainMenu?.Q<Button>("QuitButton");
+
             if (_respawnButton != null) _respawnButton.clicked += OnRespawnClicked;
             if (_quitButton != null) _quitButton.clicked += OnQuitClicked;
             if (_beginButton != null) _beginButton.clicked += OnBeginClicked;
+
+            if (_menuPlayButton != null) _menuPlayButton.clicked += OnMenuPlayClicked;
+            if (_menuHighscoresButton != null) _menuHighscoresButton.clicked += OnMenuHighscoresClicked;
+            if (_menuQuitButton != null) _menuQuitButton.clicked += OnQuitClicked;
         }
 
         private void OnBeginClicked()
@@ -178,6 +194,19 @@ namespace SnakePrototype.Systems.UI
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #endif
+        }
+
+        private void OnMenuPlayClicked()
+        {
+            Debug.Log("Menu Play Clicked");
+            if (_mainMenu != null) _mainMenu.style.display = DisplayStyle.None;
+            // Use ConfirmEvent to trigger transition in LevelFlowManager
+            GameEventManager.Publish(new ConfirmEvent());
+        }
+
+        private void OnMenuHighscoresClicked()
+        {
+            Debug.Log("Menu Highscores Clicked - Feature Pending");
         }
 
         private void OnScoreChanged(ScoreChangedEvent e)
@@ -238,6 +267,14 @@ namespace SnakePrototype.Systems.UI
         private void OnGameStateChanged(GameStateChangedEvent e)
         {
             _currentState = e.NewState;
+
+            if (e.NewState == GameState.MainMenu)
+            {
+                if (_mainMenu != null) _mainMenu.style.display = DisplayStyle.Flex;
+                if (_alertOverlay != null) _alertOverlay.style.display = DisplayStyle.None;
+                if (_levelIntro != null) _levelIntro.style.display = DisplayStyle.None;
+            }
+
             if (e.NewState == GameState.Paused)
             {
                 if (_alertOverlay != null)

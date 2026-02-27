@@ -1,8 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:Style src="project:/Assets/UI/USS/HUD.uss" />
     <ui:Style src="project:/Assets/UI/USS/AlertMeter.uss" />
+    <ui:Template name="MainMenuTemplate" src="project:/Assets/UI/UXML/MainMenu.uxml" />
     
     <ui:VisualElement name="HUD" class="hud-layer">
+        <ui:Instance template="MainMenuTemplate" name="MainMenu" style="display: none; position: absolute; left: 0; top: 0; right: 0; bottom: 0;" />
         <!-- Top Left: Score & Detection -->
         <ui:VisualElement class="hud-top-left">
             <ui:Label name="ScoreLabel" text="SCORE: 0" class="hud-text" />
