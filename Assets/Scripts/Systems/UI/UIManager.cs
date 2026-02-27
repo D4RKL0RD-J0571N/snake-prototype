@@ -15,7 +15,8 @@ namespace SnakePrototype.Systems.UI
         private VisualElement _alertOverlay;
         private Label _alertHeader;
         private Label _alertSubHeader;
-        private Button _respawnButton;
+        private Label _highscoreBadge;
+        private Button _respawnBtn;
         private Button _quitButton;
 
         // Phase 1: Main Menu & Pause
@@ -134,10 +135,10 @@ namespace SnakePrototype.Systems.UI
             _scoreLabel = _root?.Q<Label>("ScoreLabel");
             _energyBar = _root?.Q<ProgressBar>("EnergyBar");
             _alertOverlay = _root?.Q<VisualElement>("AlertOverlay");
-            _alertHeader = _alertOverlay?.Q<Label>("AlertHeader");
-            _alertSubHeader = _alertOverlay?.Q<Label>("AlertSubHeader");
-
-            _respawnButton = _alertOverlay?.Q<Button>("RespawnButton");
+            _alertHeader = _alertOverlay.Q<Label>("AlertHeader");
+            _alertSubHeader = _alertOverlay.Q<Label>("AlertSubHeader");
+            _highscoreBadge = _alertOverlay.Q<Label>("NewHighscoreBadge");
+            _respawnBtn = _alertOverlay.Q<Button>("RespawnButton");
             _quitButton = _alertOverlay?.Q<Button>("QuitButton");
 
             // Phase 3 Alert Meter
@@ -162,7 +163,7 @@ namespace SnakePrototype.Systems.UI
             _menuHighscoresButton = _mainMenu?.Q<Button>("HighscoresButton");
             _menuQuitButton = _mainMenu?.Q<Button>("QuitButton");
 
-            if (_respawnButton != null) _respawnButton.clicked += OnRespawnClicked;
+            if (_respawnBtn != null) _respawnBtn.clicked += OnRespawnClicked;
             if (_quitButton != null) _quitButton.clicked += OnQuitClicked;
             if (_beginButton != null) _beginButton.clicked += OnBeginClicked;
 
@@ -232,7 +233,8 @@ namespace SnakePrototype.Systems.UI
 
         private void OnMenuHighscoresClicked()
         {
-            Debug.Log("Menu Highscores Clicked - Feature Pending");
+            Debug.Log("Menu Highscores Clicked");
+            GameEventManager.Publish(new GameStateChangedEvent(GameState.Highscores));
         }
 
         private void OnScoreChanged(ScoreChangedEvent e)
@@ -299,6 +301,12 @@ namespace SnakePrototype.Systems.UI
                 if (_mainMenu != null) _mainMenu.style.display = DisplayStyle.Flex;
                 if (_alertOverlay != null) _alertOverlay.style.display = DisplayStyle.None;
                 if (_levelIntro != null) _levelIntro.style.display = DisplayStyle.None;
+                if (_pauseOverlay != null) _pauseOverlay.style.display = DisplayStyle.None;
+            }
+
+            if (e.NewState == GameState.Highscores)
+            {
+                if (_mainMenu != null) _mainMenu.style.display = DisplayStyle.None;
             }
 
             if (e.NewState == GameState.Paused)
@@ -313,17 +321,25 @@ namespace SnakePrototype.Systems.UI
                     _alertOverlay.style.display = DisplayStyle.Flex;
                     if (_pauseOverlay != null) _pauseOverlay.style.display = DisplayStyle.None;
 
-                    var scoreManager = ServiceLocator.Get<ScoreManager>();
-                    var levelManager = ServiceLocator.Get<LevelFlowManager>();
-
-                    int finalScore = scoreManager?.CurrentScore ?? 0;
-                    int finalLevel = levelManager?.CurrentLevel ?? 0;
-
                     if (_alertHeader != null) _alertHeader.text = "CRITICAL FAILURE";
-                    if (_alertSubHeader != null) 
-                        _alertSubHeader.text = $"FINAL SCORE: {finalScore}\nSECTOR REACHED: {finalLevel:D2}";
-                    
-                    if (_respawnButton != null) _respawnButton.text = "RETRY_SEQUENCE";
+                    if (_alertSubHeader != null)
+                    {
+                        var scoreSystem = ServiceLocator.Get<ScoreSystem>();
+                        var levelFlow = ServiceLocator.Get<LevelFlowManager>();
+                        
+                        int finalScore = scoreSystem?.CurrentScore ?? 0;
+                        int level = levelFlow?.CurrentLevel ?? 1;
+                        
+                        _alertSubHeader.text = $"FINAL SCORE: {finalScore}\nSECTOR REACHED: {level}";
+                        
+                        // Show highscore badge if applicable
+                        if (_highscoreBadge != null && scoreSystem != null)
+                        {
+                            bool isNewHigh = scoreSystem.IsNewHighscore(finalScore);
+                            _highscoreBadge.style.display = isNewHigh ? DisplayStyle.Flex : DisplayStyle.None;
+                        }
+                    }
+                    if (_respawnBtn != null) _respawnBtn.text = "RETRY_SEQUENCE";
                 }
             }
             if (e.NewState == GameState.Playing)

@@ -132,6 +132,7 @@ namespace SnakePrototype.Events
         MainMenu,
         Playing,
         Paused,
-        GameOver
+        GameOver,
+        Highscores
     }
 }

@@ -6,12 +6,12 @@ using SnakePrototype.Systems.Score;
 
 namespace SnakePrototype.Systems.UI
 {
+    [AddComponentMenu("SnakePrototype/UI/HighscoreUI")]
     public class HighscoreUI : MonoBehaviour
     {
-        [SerializeField] private UIDocument _uiDocument;
+        private UIDocument _uiDocument;
         private VisualElement _root;
         private ScrollView _highscoreList;
-        private Label _titleLabel;
         private Button _backButton;
         private Button _clearButton;
         
@@ -26,11 +26,16 @@ namespace SnakePrototype.Systems.UI
         {
             InitializeUI();
             GameEventManager.AddListener<ScoreChangedEvent>(OnScoreChanged);
+            GameEventManager.AddListener<GameStateChangedEvent>(OnGameStateChanged);
         }
         
         private void OnDisable()
         {
             GameEventManager.RemoveListener<ScoreChangedEvent>(OnScoreChanged);
+            GameEventManager.RemoveListener<GameStateChangedEvent>(OnGameStateChanged);
+            
+            if (_backButton != null) _backButton.clicked -= OnBackClicked;
+            if (_clearButton != null) _clearButton.clicked -= OnClearClicked;
         }
         
         private void InitializeUI()
@@ -40,41 +45,22 @@ namespace SnakePrototype.Systems.UI
             if (_uiDocument != null)
             {
                 _root = _uiDocument.rootVisualElement;
-                SetupHighscoreDisplay();
+                
+                _highscoreList = _root.Q<ScrollView>("HighscoreList");
+                _backButton = _root.Q<Button>("BackButton");
+                _clearButton = _root.Q<Button>("ClearButton");
+                
+                if (_backButton != null) _backButton.clicked += OnBackClicked;
+                if (_clearButton != null) _clearButton.clicked += OnClearClicked;
+                
+                // Hide by default until GameState.Highscores is reached
+                _root.style.display = DisplayStyle.None;
+                
+                RefreshHighscores();
             }
         }
         
-        private void SetupHighscoreDisplay()
-        {
-            // Create NES-style highscore display
-            _titleLabel = new Label("HIGH SCORES");
-            _titleLabel.AddToClassList("highscore-title");
-            
-            _highscoreList = new ScrollView();
-            _highscoreList.AddToClassList("highscore-list");
-            
-            _backButton = new Button(OnBackClicked);
-            _backButton.text = "BACK";
-            _backButton.AddToClassList("nes-button");
-            
-            _clearButton = new Button(OnClearClicked);
-            _clearButton.text = "CLEAR";
-            _clearButton.AddToClassList("nes-button");
-            
-            // Layout
-            _root.Add(_titleLabel);
-            _root.Add(_highscoreList);
-            
-            var buttonContainer = new VisualElement();
-            buttonContainer.AddToClassList("button-container");
-            buttonContainer.Add(_backButton);
-            buttonContainer.Add(_clearButton);
-            _root.Add(buttonContainer);
-            
-            RefreshHighscores();
-        }
-        
-        private void RefreshHighscores()
+        public void RefreshHighscores()
         {
             if (_scoreSystem == null || _highscoreList == null) return;
             
@@ -82,20 +68,20 @@ namespace SnakePrototype.Systems.UI
             
             var highscores = _scoreSystem.Highscores;
             
-            if (highscores.Length == 0)
+            if (highscores == null || highscores.Length == 0)
             {
-                var noScoresLabel = new Label("NO HIGH SCORES YET");
+                var noScoresLabel = new Label("DATABASE_EMPTY: NO_RECORDS_FOUND");
                 noScoresLabel.AddToClassList("no-scores");
-                _highscoreList.contentContainer.Add(noScoresLabel);
+                _highscoreList.Add(noScoresLabel);
                 return;
             }
             
-            // Create NES-style highscore entries
+            // Create terminal-style highscore entries
             for (int i = 0; i < highscores.Length; i++)
             {
                 var entry = highscores[i];
                 var entryElement = CreateHighscoreEntry(i + 1, entry);
-                _highscoreList.contentContainer.Add(entryElement);
+                _highscoreList.Add(entryElement);
             }
         }
         
@@ -108,8 +94,8 @@ namespace SnakePrototype.Systems.UI
             var rankLabel = new Label($"{rank:D2}");
             rankLabel.AddToClassList("rank");
             
-            // Player name (8-character NES style)
-            var nameLabel = new Label(entry.PlayerName.PadRight(8).Substring(0, 8).ToUpper());
+            // Player name
+            var nameLabel = new Label(entry.PlayerName.ToUpper());
             nameLabel.AddToClassList("player-name");
             
             // Score
@@ -117,7 +103,7 @@ namespace SnakePrototype.Systems.UI
             scoreLabel.AddToClassList("score");
             
             // Level
-            var levelLabel = new Label($"L{entry.Level:D2}");
+            var levelLabel = new Label($"SEC_{entry.Level:D2}");
             levelLabel.AddToClassList("level");
             
             // Rank title
@@ -135,13 +121,13 @@ namespace SnakePrototype.Systems.UI
         
         private void OnBackClicked()
         {
-            // Return to main menu
+            Debug.Log("Highscore Back Clicked");
             GameEventManager.Publish(new GameStateChangedEvent(GameState.MainMenu));
         }
         
         private void OnClearClicked()
         {
-            // Clear highscores with confirmation
+            Debug.Log("Wipe Database Clicked");
             if (_scoreSystem != null)
             {
                 _scoreSystem.ClearHighscores();
@@ -151,10 +137,19 @@ namespace SnakePrototype.Systems.UI
         
         private void OnScoreChanged(ScoreChangedEvent e)
         {
-            // Update if this is a new highscore
-            if (_scoreSystem != null && _scoreSystem.IsNewHighscore(e.CurrentScore))
+            // Refresh if highscores were updated
+            RefreshHighscores();
+        }
+        private void OnGameStateChanged(GameStateChangedEvent e)
+        {
+            if (_uiDocument != null)
             {
-                RefreshHighscores();
+                _uiDocument.rootVisualElement.style.display = (e.NewState == GameState.Highscores) ? DisplayStyle.Flex : DisplayStyle.None;
+                
+                if (e.NewState == GameState.Highscores)
+                {
+                    RefreshHighscores();
+                }
             }
         }
     }
