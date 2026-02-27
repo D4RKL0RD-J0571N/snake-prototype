@@ -152,6 +152,5 @@ namespace SnakePrototype.Core
         }
         #endregion
 
-        #endregion
     }
 }
