@@ -57,6 +57,19 @@
     margin-bottom: 40px;
 }
 
+.highscore-badge {
+    font-size: 32px;
+    color: #00ff00;
+    -unity-font-style: bold;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px #00ff00;
+    margin-bottom: 30px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-color: #00ff00;
+    border-width: 1px;
+}
+
 .button-container {
     flex-direction: row;
     margin-top: 20px;

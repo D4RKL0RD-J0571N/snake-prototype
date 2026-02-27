@@ -16,6 +16,7 @@
             <ui:VisualElement class="alert-container" style="align-items: center;">
                 <ui:Label name="AlertHeader" text="⚠️ DETECTION DETECTED ⚠️" class="alert-text" />
                 <ui:Label name="AlertSubHeader" text="EVADE IMMEDIATELY" class="sub-text" />
+                <ui:Label name="NewHighscoreBadge" text="[ ! NEW_RECORD_ARCHIVED ! ]" class="highscore-badge" style="display: none;" />
                 <ui:VisualElement class="button-container">
                     <ui:Button name="RespawnButton" text="RETRY" class="hud-button" />
                     <ui:Button name="QuitButton" text="QUIT" class="hud-button" />

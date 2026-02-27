@@ -39,5 +39,22 @@ namespace SnakePrototype.Systems.Score
             TotalGamesPlayed = 0;
             LastPlayed = DateTime.Now;
         }
+
+        public static void Save(HighscoreData data)
+        {
+            string json = JsonUtility.ToJson(data);
+            PlayerPrefs.SetString("HighscoreData", json);
+            PlayerPrefs.Save();
+        }
+
+        public static HighscoreData Load()
+        {
+            if (PlayerPrefs.HasKey("HighscoreData"))
+            {
+                string json = PlayerPrefs.GetString("HighscoreData");
+                return JsonUtility.FromJson<HighscoreData>(json);
+            }
+            return new HighscoreData();
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace SnakePrototype.Core
         [SerializeField] private SnakePrototype.Systems.Snake.SnakeConfiguration _snakeConfig;
         [SerializeField] private SnakePrototype.Systems.Level.LevelConfig _levelConfig;
         [SerializeField] private SnakePrototype.Systems.Environment.VFXConfiguration _vfxConfig;
+        [SerializeField] private SnakePrototype.Systems.Score.ScoreConfiguration _scoreConfig;
 
         [Header("UI Reference")]
         [SerializeField] private UnityEngine.UIElements.UIDocument _mainUIDocument;
@@ -93,8 +94,7 @@ namespace SnakePrototype.Core
             ServiceLocator.Register<GridManager>(gridManager);
 
             // 4. Score System (Comprehensive scoring)
-            var scoreConfiguration = CreateDefaultScoreConfiguration();
-            var scoreSystem = new ScoreSystem(scoreConfiguration);
+            var scoreSystem = new ScoreSystem(_scoreConfig);
             ServiceLocator.Register<ScoreSystem>(scoreSystem);
 
             // 5. Score Manager (Legacy compatibility)
@@ -152,13 +152,6 @@ namespace SnakePrototype.Core
         }
         #endregion
 
-        #region Helper Methods
-        private ScoreConfiguration CreateDefaultScoreConfiguration()
-        {
-            var config = ScriptableObject.CreateInstance<ScoreConfiguration>();
-            // Use default values from the ScriptableObject
-            return config;
-        }
         #endregion
     }
 }

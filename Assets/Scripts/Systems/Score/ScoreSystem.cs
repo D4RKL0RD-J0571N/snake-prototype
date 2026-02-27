@@ -58,53 +58,18 @@ namespace SnakePrototype.Systems.Score
 
         private void LoadHighscores()
         {
-            string path = GetHighscorePath();
-
-            try
-            {
-                if (File.Exists(path))
-                {
-                    string json = File.ReadAllText(path);
-                    _highscoreData = JsonUtility.FromJson<HighscoreData>(json);
-                    Debug.Log($"Loaded {_highscoreData.Entries.Length} highscores");
-                }
-                else
-                {
-                    _highscoreData = new HighscoreData();
-                    Debug.Log("No existing highscore file found, starting fresh");
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Failed to load highscores: {e.Message}");
-                _highscoreData = new HighscoreData();
-            }
+            _highscoreData = HighscoreData.Load();
+            Debug.Log($"Loaded {(_highscoreData.Entries?.Length ?? 0)} highscores via PlayerPrefs");
         }
 
         public void SaveHighscores()
         {
-            string path = GetHighscorePath();
-
-            try
-            {
-                _highscoreData.LastPlayed = DateTime.Now;
-                _highscoreData.TotalGamesPlayed++;
-
-                string json = JsonUtility.ToJson(_highscoreData, true);
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-                File.WriteAllText(path, json);
-                Debug.Log($"Saved {_highscoreData.Entries.Length} highscores");
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Failed to save highscores: {e.Message}");
-            }
+            _highscoreData.LastPlayed = DateTime.Now;
+            _highscoreData.TotalGamesPlayed++;
+            HighscoreData.Save(_highscoreData);
+            Debug.Log($"Saved {(_highscoreData.Entries?.Length ?? 0)} highscores via PlayerPrefs");
         }
 
-        private string GetHighscorePath()
-        {
-            return Path.Combine(Application.persistentDataPath, "highscores.json");
-        }
 
         private void OnLevelStarted(LevelStartedEvent e)
         {
