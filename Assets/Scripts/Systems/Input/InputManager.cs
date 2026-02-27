@@ -15,10 +15,9 @@ namespace SnakePrototype.Systems.Input
 
         private GameState _currentGameState = GameState.Playing;
 
-        [Header("Input Settings")]
-        [SerializeField] private float _deadzone = 0.1f;
-        [SerializeField] private float _sensitivity = 1.0f;
-        [SerializeField] private bool _useRawInput = false;
+        private float _deadzone = 0.1f;
+        private float _sensitivity = 1.0f;
+        private bool _useRawInput = false;
 
         public void Initialize()
         {
