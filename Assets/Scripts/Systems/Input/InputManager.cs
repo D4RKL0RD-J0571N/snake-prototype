@@ -10,6 +10,10 @@ namespace SnakePrototype.Systems.Input
         private InputActionAsset _inputAsset;
         private InputAction _moveAction;
         private InputAction _pauseAction;
+        private InputAction _confirmAction;
+        private InputAction _cancelAction;
+
+        private GameState _currentGameState = GameState.Playing;
 
         [Header("Input Settings")]
         [SerializeField] private float _deadzone = 0.1f;
@@ -20,9 +24,7 @@ namespace SnakePrototype.Systems.Input
         {
             Debug.Log("InputManager Initializing...");
             
-            // Load the asset (assuming it's in a Resources folder or we construct it manually)
-            // For a prototype without Addressables/Resources setup, manually defining actions is fastest/safest.
-            // But let's try to load the asset file if possible, or fallback to code definition.
+            GameEventManager.AddListener<GameStateChangedEvent>(OnGameStateChanged);
             
             // 1. Move Action (Stick + DPad + WASD + Arrows)
             _moveAction = new InputAction("Move", binding: "<Gamepad>/leftStick");
@@ -44,23 +46,40 @@ namespace SnakePrototype.Systems.Input
             _pauseAction.AddBinding("<Gamepad>/start");
 
             // 3. Confirm/Cancel (For UI and Flow)
-            var confirmAction = new InputAction("Confirm", binding: "<Keyboard>/enter");
-            confirmAction.AddBinding("<Keyboard>/space");
-            confirmAction.AddBinding("<Gamepad>/buttonSouth"); // A
+            _confirmAction = new InputAction("Confirm", binding: "<Keyboard>/enter");
+            _confirmAction.AddBinding("<Keyboard>/space");
+            _confirmAction.AddBinding("<Gamepad>/buttonSouth"); // A
 
-            var cancelAction = new InputAction("Cancel", binding: "<Keyboard>/backspace");
-            cancelAction.AddBinding("<Gamepad>/buttonEast"); // B
+            _cancelAction = new InputAction("Cancel", binding: "<Keyboard>/backspace");
+            _cancelAction.AddBinding("<Gamepad>/buttonEast"); // B
 
             _moveAction.performed += OnMove;
             _pauseAction.performed += OnPause;
-            confirmAction.performed += ctx => GameEventManager.Publish(new RespawnEvent()); // Temporary hook for confirm
+            _confirmAction.performed += OnConfirm;
             
             _moveAction.Enable();
             _pauseAction.Enable();
-            confirmAction.Enable();
-            cancelAction.Enable();
+            _confirmAction.Enable();
+            _cancelAction.Enable();
 
             Debug.Log($"InputManager Initialized (Sensitivity: {_sensitivity}, Deadzone: {_deadzone})");
+        }
+
+        private void OnGameStateChanged(GameStateChangedEvent e)
+        {
+            _currentGameState = e.NewState;
+        }
+
+        private void OnConfirm(InputAction.CallbackContext context)
+        {
+            // Gate RespawnEvent behind GameOver
+            if (_currentGameState == GameState.GameOver)
+            {
+                GameEventManager.Publish(new RespawnEvent());
+            }
+
+            // Always publish generic confirm for other systems
+            GameEventManager.Publish(new ConfirmEvent());
         }
 
         private void OnMove(InputAction.CallbackContext context)
