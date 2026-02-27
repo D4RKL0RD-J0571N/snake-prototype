@@ -1,0 +1,26 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi:schemaLocation="UnityEngine.UIElements ../../../../UIElementsSchema/UnityEngine.UIElements.xsd UnityEditor.UIElements ../../../../UIElementsSchema/UnityEditor.UIElements.xsd">
+    <ui:Style src="project:/Assets/UI/USS/MainMenu.uss" />
+    <ui:VisualElement name="MainMenuRoot" class="menu-background">
+        <ui:VisualElement class="menu-container">
+            <!-- Header section -->
+            <ui:VisualElement class="terminal-header">
+                <ui:Label text="SNAKE_OS" class="logo-text" />
+                <ui:Label text="V0.9.0-BETA" class="version-text" />
+                <ui:VisualElement class="ascii-border" />
+            </ui:VisualElement>
+
+            <!-- Menu buttons -->
+            <ui:VisualElement name="ButtonGroup" class="button-group">
+                <ui:Button name="PlayButton" text="> INITIALIZE_PLAY" class="menu-button" />
+                <ui:Button name="HighscoresButton" text="> RETRIEVE_DATA" class="menu-button" />
+                <ui:Button name="QuitButton" text="> TERMINATE_SESSION" class="menu-button" />
+            </ui:VisualElement>
+
+            <!-- Footer section -->
+            <ui:VisualElement class="terminal-header" style="margin-top: 40px; margin-bottom: 0;">
+                <ui:VisualElement class="ascii-border" />
+                <ui:Label text="SYSTEM READY. AWAITING INPUT..." class="version-text" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

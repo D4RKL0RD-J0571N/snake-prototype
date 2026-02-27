@@ -1,0 +1,81 @@
+/* MainMenu.uss - Terminal Theme */
+
+.menu-background {
+    background-color: rgba(0, 5, 0, 0.95);
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    border-color: #00ff00;
+    border-width: 2px;
+}
+
+.menu-container {
+    width: 60%;
+    max-width: 800px;
+    padding: 40px;
+    background-color: #000a00;
+    border-width: 1px;
+    border-color: #00ff00;
+}
+
+.terminal-header {
+    margin-bottom: 40px;
+    align-items: center;
+}
+
+.logo-text {
+    font-size: 64px;
+    color: #00ff00;
+    -unity-font-style: bold;
+    letter-spacing: 5px;
+    /* Simulate a CRT glow */
+    text-shadow: 0 0 10px #00ff00;
+}
+
+.version-text {
+    font-size: 14px;
+    color: #008800;
+    margin-top: 5px;
+}
+
+.button-group {
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu-button {
+    width: 300px;
+    height: 60px;
+    margin: 10px;
+    background-color: transparent;
+    border-color: #00ff00;
+    border-width: 1px;
+    color: #00ff00;
+    font-size: 24px;
+    transition-duration: 0.1s;
+}
+
+.menu-button:hover {
+    background-color: #00ff00;
+    color: #000000;
+}
+
+.menu-button:active {
+    background-color: #00aa00;
+    border-color: #00aa00;
+}
+
+.terminal-cursor {
+    width: 10px;
+    height: 24px;
+    background-color: #00ff00;
+    margin-left: 5px;
+}
+
+/* ASCII lines */
+.ascii-border {
+    height: 2px;
+    background-color: #00ff00;
+    width: 100%;
+    margin: 5px 0;
+}
