@@ -14,15 +14,15 @@
 
 | Day | Task ID | Task | Files | Effort |
 |-----|---------|------|-------|--------|
-| 1 | T0.1 | Add `Level_01.unity` to Build Settings at index 0; remove/disable `SampleScene` | **Editor only** (EditorBuildSettings) | S |
-| 1 | T0.2 | Gate Confirm input — only fire `RespawnEvent` in `GameState.GameOver` | [InputManager.cs](file:///d:/Development/Game%20Development/snake-prototype/Assets/Scripts/Systems/Input/InputManager.cs) | S |
-| 1 | T0.3 | Fix `RemoveListener<T>` — implement subscription-token removal | [GameEventManager.cs](file:///d:/Development/Game%20Development/snake-prototype/Assets/Scripts/Core/GameEventManager.cs) | M |
-| 1 | T0.4 | Remove invalid `[SerializeField]`/`[Header]` from `InputManager` | [InputManager.cs](file:///d:/Development/Game%20Development/snake-prototype/Assets/Scripts/Systems/Input/InputManager.cs) | S |
-| 1 | T0.5 | Remove misleading `[AddComponentMenu]` from non-MonoBehaviours | [LevelFlowManager.cs](file:///d:/Development/Game%20Development/snake-prototype/Assets/Scripts/Systems/Level/LevelFlowManager.cs), [AudioManager.cs](file:///d:/Development/Game%20Development/snake-prototype/Assets/Scripts/Systems/Environment/AudioManager.cs) | S |
-| 2 | T0.6 | Uncomment `PauseInputEvent` publish + create `PauseService` | [InputManager.cs](file:///d:/Development/Game%20Development/snake-prototype/Assets/Scripts/Systems/Input/InputManager.cs), **NEW** `PauseService.cs` | S |
-| 2 | T0.7 | Wire `UIManager` for `GameState.Paused` (reuse AlertOverlay temporarily) | [UIManager.cs](file:///d:/Development/Game%20Development/snake-prototype/Assets/Scripts/Systems/UI/UIManager.cs) | S |
-| 2 | T0.8 | Update PlayerSettings (company name, bundle ID, resolution 1920×1080, runInBackground) | **Editor only** (ProjectSettings) | S |
-| 2 | T0.9 | Dispose `confirmAction` and `cancelAction` in `InputManager.Shutdown()` | [InputManager.cs](file:///d:/Development/Game%20Development/snake-prototype/Assets/Scripts/Systems/Input/InputManager.cs) | S |
+| 1 | T0.1 | ✅ Add `Level_01.unity` to Build Settings at index 0; remove/disable `SampleScene` | **Editor only** (EditorBuildSettings) | S |
+| 1 | T0.2 | ✅ Gate Confirm input — only fire `RespawnEvent` in `GameState.GameOver` | [InputManager.cs](file:///d:/Development\Game Development\snake-prototype\Assets\Scripts\Systems\Input\InputManager.cs) | S |
+| 1 | T0.3 | ✅ Fix `RemoveListener<T>` — implement subscription-token removal | [GameEventManager.cs](file:///d:/Development\Game Development\snake-prototype\Assets\Scripts\Core\GameEventManager.cs) | M |
+| 1 | T0.4 | ✅ Remove invalid `[SerializeField]`/`[Header]` from `InputManager` | [InputManager.cs](file:///d:/Development\Game Development\snake-prototype\Assets\Scripts\Systems\Input\InputManager.cs) | S |
+| 1 | T0.5 | ✅ Remove misleading `[AddComponentMenu]` from non-MonoBehaviours | [LevelFlowManager.cs](file:///d:/Development\Game Development\snake-prototype\Assets\Scripts\Systems\Level\LevelFlowManager.cs), [AudioManager.cs](file:///d:/Development\Game Development\snake-prototype\Assets\Scripts\Systems\Environment\AudioManager.cs) | S |
+| 2 | T0.6 | ✅ Uncomment `PauseInputEvent` publish + create `PauseService` | [InputManager.cs](file:///d:/Development\Game Development\snake-prototype\Assets\Scripts\Systems\Input\InputManager.cs), **NEW** `PauseService.cs` | S |
+| 2 | T0.7 | ✅ Wire `UIManager` for `GameState.Paused` (reuse AlertOverlay temporarily) | [UIManager.cs](file:///d:/Development\Game Development\snake-prototype\Assets\Scripts\Systems\UI\UIManager.cs) | S |
+| 2 | T0.8 | ✅ Update PlayerSettings (company name, bundle ID, resolution 1920×1080, runInBackground) | **Editor only** (ProjectSettings) | S |
+| 2 | T0.9 | ✅ Dispose `confirmAction` and `cancelAction` in `InputManager.Shutdown()` | [InputManager.cs](file:///d:/Development\Game Development\snake-prototype\Assets\Scripts\Systems\Input\InputManager.cs) | S |
 
 **Exit criteria**: Standalone `.exe` boots into Level_01, plays through collect → die → retry → pause → resume with no crashes or listener leaks.
 
