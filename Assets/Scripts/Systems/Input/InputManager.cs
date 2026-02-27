@@ -113,8 +113,7 @@ namespace SnakePrototype.Systems.Input
         private void OnPause(InputAction.CallbackContext context)
         {
             // Toggle pause state logic usually resides in Game/Time manager, but input is event-driven
-            // GameEventManager.Publish(new PauseInputEvent()); 
-            // (PauseInputEvent is defined in GameEvents.cs)
+            GameEventManager.Publish(new PauseInputEvent()); 
         }
 
         public void Tick() 

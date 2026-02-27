@@ -6,6 +6,7 @@ using SnakePrototype.Systems.Detection;
 using SnakePrototype.Systems.Score;
 using SnakePrototype.Systems.UI;
 using SnakePrototype.Systems.Environment;
+using SnakePrototype.Systems.Game;
 
 namespace SnakePrototype.Core
 {
@@ -107,6 +108,10 @@ namespace SnakePrototype.Core
             // 7. Detection (AI/Rules) - Depends on Snake
             var detectionManager = new DetectionManager();
             ServiceLocator.Register<DetectionManager>(detectionManager);
+
+            // 7.5 Pause Service (Event-driven)
+            var pauseService = new PauseService();
+            ServiceLocator.Register<PauseService>(pauseService);
 
             // 8. UI (Visuals) - Depends on everything
             var uiManager = new UIManager(_mainUIDocument);
