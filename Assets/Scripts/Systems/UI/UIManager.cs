@@ -36,6 +36,8 @@ namespace SnakePrototype.Systems.UI
         private VisualElement _paletteRow;
         private Button _beginButton;
 
+        private GameState _currentState = GameState.Playing;
+
         // UI Scaling
         private float _scaleFactor = 1.0f;
         private Vector2 _referenceResolution = new Vector2(1920, 1080);
@@ -156,8 +158,16 @@ namespace SnakePrototype.Systems.UI
 
         private void OnRespawnClicked()
         {
-            Debug.Log("Respawn Clicked");
-            GameEventManager.Publish(new RespawnEvent());
+            Debug.Log("Respawn/Resume Clicked");
+            if (_currentState == GameState.Paused)
+            {
+                GameEventManager.Publish(new PauseInputEvent());
+            }
+            else
+            {
+                GameEventManager.Publish(new RespawnEvent());
+            }
+            
             if (_alertOverlay != null) _alertOverlay.style.display = DisplayStyle.None;
         }
 
@@ -227,6 +237,17 @@ namespace SnakePrototype.Systems.UI
 
         private void OnGameStateChanged(GameStateChangedEvent e)
         {
+            _currentState = e.NewState;
+            if (e.NewState == GameState.Paused)
+            {
+                if (_alertOverlay != null)
+                {
+                    _alertOverlay.style.display = DisplayStyle.Flex;
+                    if (_alertHeader != null) _alertHeader.text = "PAUSED";
+                    if (_alertSubHeader != null) _alertSubHeader.text = "MISSION ON HOLD";
+                    if (_respawnButton != null) _respawnButton.text = "RESUME";
+                }
+            }
             if (e.NewState == GameState.GameOver)
             {
                 if (_alertOverlay != null)
