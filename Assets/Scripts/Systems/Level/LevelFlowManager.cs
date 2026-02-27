@@ -59,6 +59,7 @@ namespace SnakePrototype.Systems.Level
             _config.Seed = seed;
 
             // Notify UI and systems
+            GameEventManager.Publish(new GameStateChangedEvent(GameState.Playing));
             GameEventManager.Publish(new LevelStartedEvent(_currentLevel, _config.TargetCores));
 
             // Rebuild level
