@@ -1,0 +1,68 @@
+.alert-meter-root {
+    width: 300px;
+    padding: 15px;
+    background-color: rgba(0, 20, 30, 0.85);
+    border-width: 2px;
+    border-color: rgba(0, 255, 255, 0.3);
+    border-radius: 8px;
+    margin: 10px;
+}
+
+.meter-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.meter-title {
+    color: #00ffff;
+    font-size: 14px;
+    letter-spacing: 2px;
+    -unity-font-style: bold;
+}
+
+.meter-value {
+    color: #00ffff;
+    font-size: 16px;
+    -unity-font-style: bold;
+}
+
+.meter-track {
+    height: 12px;
+    background-color: rgba(0, 50, 60, 0.5);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.meter-fill {
+    height: 100%;
+    background-color: #00ffff;
+    transition-property: width;
+    transition-duration: 0.2s;
+}
+
+.status-tip {
+    color: rgba(0, 255, 255, 0.5);
+    font-size: 10px;
+    -unity-font-style: italic;
+    letter-spacing: 1px;
+}
+
+/* State Variants */
+.alert-warning .meter-fill {
+    background-color: #ffff00;
+}
+
+.alert-warning .meter-title, .alert-warning .meter-value {
+    color: #ffff00;
+}
+
+.alert-danger .meter-fill {
+    background-color: #ff0000;
+}
+
+.alert-danger .meter-title, .alert-danger .meter-value {
+    color: #ff0000;
+}

@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be5d34868e6af6f4a9a06c57b90f0873, type: 3}
+  m_Name: LevelConfig
+  m_EditorClassIdentifier: SnakePrototype.Scripts::SnakePrototype.Systems.Level.LevelConfig
+  Width: 28
+  Height: 28
+  CellSize: 1
+  Seed: 2006600672
+  WallProbability: 0.099999994
+  BackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+  PrimaryColor: {r: 0, g: 1, b: 1, a: 1}
+  AlertColor: {r: 1, g: 0, b: 0, a: 1}
+  GridColor: {r: 0.46095657, g: 0, b: 1, a: 1}
+  AmbientLoop: {fileID: 0}
+  MusicBase: {fileID: 0}
+  MusicTension: {fileID: 0}
+  MusicAlert: {fileID: 0}
+  CollectionSFX: {fileID: 0}
+  AlertSFX: {fileID: 0}
+  DeathSFX: {fileID: 0}
+  LevelStartSFX: {fileID: 0}
+  GuardPrefab: {fileID: 1066999965376262370, guid: 920de22f9bef6f5469a7b6a5476e5c21, type: 3}
+  WallPrefab: {fileID: 2374307461115283164, guid: 43be048a37ebc154b9c0cac3619ec0ec, type: 3}
+  InitialEnergyCores: 3
+  GuardCount: 4
+  TargetCores: 13
+  DifficultyMultiplier: 1
+  ColorTheme: 1

@@ -1,0 +1,69 @@
+{
+  "health": "YELLOW — The core architecture (ServiceLocator + EventBus + Bootstrap) is solid, well-documented, and follows disciplined separation of concerns. Gameplay loop (snake movement, energy collection, detection, scoring, level progression) is functional in a single-scene model. However, the project is missing critical menus (MainMenu, Pause, GameOver, Options), has a commented-out pause handler, a no-op RemoveListener in the EventBus, invalid [SerializeField] on a plain C# class (InputManager), and Level_01.unity is not in Build Settings. The prototype plays in-editor but cannot ship as a standalone build without menu scaffolding and the blocker fixes below.",
+
+  "top_tasks": [
+    {
+      "rank": 1,
+      "title": "Add Level_01 to Build Settings and set as entry scene",
+      "reason": "Only SampleScene is in Build Settings — a standalone build would boot into the wrong (or empty) scene."
+    },
+    {
+      "rank": 2,
+      "title": "Implement Pause system (uncomment + wire PauseInputEvent)",
+      "reason": "OnPause handler body is commented out; pressing Escape/P/Start does nothing, making the game uninterruptible."
+    },
+    {
+      "rank": 3,
+      "title": "Create MainMenu UI overlay (UXML + USS) with Play / Quit buttons",
+      "reason": "GameState.MainMenu exists in the enum but no UI or logic drives it — the game jumps straight into gameplay."
+    },
+    {
+      "rank": 4,
+      "title": "Create GameOver / Retry overlay with score summary",
+      "reason": "AlertOverlay partially covers this but lacks a proper score recap, highscore display integration, or return-to-menu flow."
+    },
+    {
+      "rank": 5,
+      "title": "Fix InputManager [SerializeField] on non-MonoBehaviour",
+      "reason": "InputManager is a plain C# class (IGameService) using [Header] and [SerializeField] which are MonoBehaviour-only attributes — they silently do nothing and mislead readers."
+    },
+    {
+      "rank": 6,
+      "title": "Fix GameEventManager.RemoveListener (currently a no-op)",
+      "reason": "UIManager.Shutdown calls RemoveListener 8 times but the method body is empty, causing listener leaks on scene reload or service re-init."
+    }
+  ],
+
+  "blockers": [
+    {
+      "id": "B1",
+      "title": "Level_01.unity missing from EditorBuildSettings",
+      "detail": "Build Settings only contains SampleScene.unity. A standalone build will not load Level_01 at all, resulting in a blank/wrong scene on launch."
+    },
+    {
+      "id": "B2",
+      "title": "No entry-point menu or game-start flow",
+      "detail": "GameState.MainMenu is defined but never triggered. The game auto-starts gameplay on Awake with no user-facing start screen, violating every platform's UX certification requirement."
+    },
+    {
+      "id": "B3",
+      "title": "Confirm action hardwired to RespawnEvent",
+      "detail": "InputManager line 56 permanently maps Enter/Space/A-button to RespawnEvent regardless of game state. This will respawn the player during gameplay, during menus, during level intros — completely breaking flow."
+    }
+  ],
+
+  "quick_checks": {
+    "main_menu_exists": "NO — GameState.MainMenu enum value exists but no UI/scene/logic implements it.",
+    "pause_exists": "NO — PauseInputEvent event class exists, input bindings exist, but OnPause handler is commented out. No Time.timeScale logic anywhere.",
+    "options_menu_exists_audio": "NO — AudioManager service is registered but no UI exposes volume sliders or audio settings.",
+    "options_menu_exists_controls": "NO — No rebinding UI or control settings exist.",
+    "multi_controller_support": "YES (partial) — InputManager binds Gamepad leftStick, dpad, and start button alongside keyboard. Multiple simultaneous controllers are not disambiguated.",
+    "mobile_input_mapping": "NO — No Touchscreen bindings, no virtual joystick, no swipe detection anywhere in the codebase.",
+    "single_scene_loader_pattern": "YES — Zero calls to SceneManager.LoadScene in the entire codebase. All state transitions are handled via GameState enum + UI overlay toggling within a single scene."
+  },
+
+  "quick_fix": "Uncomment line 98 in InputManager.cs (`GameEventManager.Publish(new PauseInputEvent())`) and add a 5-line handler in GameBootstrapper.Update or a new tiny PauseService that toggles Time.timeScale between 0 and 1 on PauseInputEvent, plus show/hide a 'PAUSED' label in UIManager.OnGameStateChanged for GameState.Paused. This gives you a working pause in under 30 minutes, making the in-editor experience feel like a shippable game loop. For the remaining 30 minutes, add Level_01 to Build Settings and wire the LevelIntro overlay to show on first boot as a pseudo-main-menu (title + Begin button already exist in UXML).",
+
+  "confidence": 0.92,
+  "confidence_notes": "High confidence — inspected all core scripts, scenes, build settings, UI files, input bindings, and event definitions directly. Minor uncertainty: could not pull Unity console logs (MCP connection dropped), so there may be additional runtime warnings not captured. The _Recovery folder and SampleScene suggest prior instability that may surface residual issues."
+}

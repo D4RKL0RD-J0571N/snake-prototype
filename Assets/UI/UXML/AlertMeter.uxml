@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="AlertMeterContainer" class="alert-meter-root">
+        <ui:VisualElement name="MeterHeader" class="meter-header">
+            <ui:Label text="DETECTION STATUS" class="meter-title" />
+            <ui:Label name="DetectionValue" text="0%" class="meter-value" />
+        </ui:VisualElement>
+        <ui:VisualElement name="MeterTrack" class="meter-track">
+            <ui:VisualElement name="MeterFill" class="meter-fill" style="width: 0%;" />
+        </ui:VisualElement>
+        <ui:Label text="SCANNING..." name="StatusText" class="status-tip" />
+    </ui:VisualElement>
+</ui:UXML>

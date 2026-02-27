@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="../USS/Theme.uss" />
+    <Style src="../USS/HUD.uss" />
+
+    <ui:VisualElement name="HUD" class="hud-layer">
+        <ui:VisualElement class="hud-top-left">
+            <ui:Label name="ScoreLabel" text="SCORE: 0" class="hud-text" />
+            <ui:ProgressBar name="EnergyBar" title="ENERGY" value="0.5" class="hud-bar" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="AlertOverlay" class="alert-overlay" style="display: none;">
+            <ui:Label text="⚠️ DETECTION DETECTED ⚠️" class="alert-text" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="../USS/Theme.uss" />
+    <Style src="../USS/Highscore.uss" />
+    
+    <ui:VisualElement name="HighscoreScreen" class="highscore-screen">
+        <ui:Label name="TitleLabel" text="HIGH SCORES" class="nes-title" />
+        
+        <ui:ScrollView name="HighscoreList" class="highscore-scroll">
+            <!-- Highscore entries will be added programmatically -->
+        </ui:ScrollView>
+        
+        <ui:VisualElement class="button-row">
+            <ui:Button name="BackButton" text="BACK" class="nes-button" />
+            <ui:Button name="ClearButton" text="CLEAR" class="nes-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

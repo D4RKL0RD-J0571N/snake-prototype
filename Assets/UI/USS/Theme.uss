@@ -1,0 +1,21 @@
+:root {
+    --color-primary: #00FF99; /* Neon Green */
+    --color-alert: #FF3333;   /* Neon Red */
+    --color-bg: rgba(0, 20, 10, 0.8);
+    --font-size-large: 24px;
+    --font-size-medium: 18px;
+}
+
+.unity-label {
+    color: var(--color-primary);
+    -unity-font-style: bold;
+}
+
+.hud-container {
+    padding: 10px;
+    background-color: var(--color-bg);
+    border-radius: 5px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}

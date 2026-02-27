@@ -1,0 +1,19 @@
+{
+    "name": "SnakePrototype.Scripts",
+    "rootNamespace": "SnakePrototype",
+    "references": [
+        "Unity.InputSystem",
+        "Unity.TextMeshPro",
+        "UnityEngine.UIElementsModule",
+        "UnityEngine.UIElementsGameObjectsModule"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
