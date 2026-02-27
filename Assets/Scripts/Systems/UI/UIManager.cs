@@ -3,6 +3,8 @@ using UnityEngine.UIElements;
 using SnakePrototype.Core;
 using SnakePrototype.Events;
 using SnakePrototype.Systems.Environment;
+using SnakePrototype.Systems.Score;
+using SnakePrototype.Systems.Level;
 
 namespace SnakePrototype.Systems.UI
 {
