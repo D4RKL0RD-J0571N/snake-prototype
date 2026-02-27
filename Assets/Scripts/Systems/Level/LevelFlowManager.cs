@@ -8,7 +8,6 @@ namespace SnakePrototype.Systems.Level
     /// <summary>
     /// Manages the game loop, level progression, and win conditions.
     /// </summary>
-    [AddComponentMenu("SnakePrototype/Level/Level Flow Manager")]
     public class LevelFlowManager : IGameService
     {
         #region Fields

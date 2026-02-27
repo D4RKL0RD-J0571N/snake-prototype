@@ -6,7 +6,6 @@ using SnakePrototype.Systems.Level;
 
 namespace SnakePrototype.Systems.Environment
 {
-    [AddComponentMenu("Snake Prototype/Systems/Environment/Audio Manager")]
     public class AudioManager : IGameService
     {
         #region Fields
