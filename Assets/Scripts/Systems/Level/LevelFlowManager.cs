@@ -30,11 +30,12 @@ namespace SnakePrototype.Systems.Level
             GameEventManager.AddListener<EnergyCollectedEvent>(OnEnergyCollected);
             GameEventManager.AddListener<RespawnEvent>(OnRespawn);
             GameEventManager.AddListener<LevelIntroConfirmedEvent>(OnLevelIntroConfirmed);
+            GameEventManager.AddListener<ConfirmEvent>(OnConfirm);
             
             Debug.Log("LevelFlowManager Initialized.");
             
-            // Start with Intro for Level 1
-            PrepareNextLevel(true); 
+            // Start in MainMenu
+            GameEventManager.Publish(new GameStateChangedEvent(GameState.MainMenu));
         }
 
         public void Shutdown()
@@ -42,6 +43,7 @@ namespace SnakePrototype.Systems.Level
             GameEventManager.RemoveListener<EnergyCollectedEvent>(OnEnergyCollected);
             GameEventManager.RemoveListener<RespawnEvent>(OnRespawn);
             GameEventManager.RemoveListener<LevelIntroConfirmedEvent>(OnLevelIntroConfirmed);
+            GameEventManager.RemoveListener<ConfirmEvent>(OnConfirm);
         }
         #endregion
 
@@ -84,6 +86,16 @@ namespace SnakePrototype.Systems.Level
         private void OnLevelIntroConfirmed(LevelIntroConfirmedEvent e)
         {
             StartLevel();
+        }
+
+        private void OnConfirm(ConfirmEvent e)
+        {
+            // Transition from MainMenu to Intro
+            // This is a temporary debug transition until buttons are wired in UIManager
+            if (_state == FlowState.Idle)
+            {
+                PrepareNextLevel(true);
+            }
         }
         #endregion
 
