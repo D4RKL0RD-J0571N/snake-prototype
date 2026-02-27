@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="Pause.uss" />
+    <ui:VisualElement name="PauseOverlay" class="pause-background">
+        <ui:VisualElement class="pause-container">
+            <ui:VisualElement class="pause-header">
+                <ui:Label text="PAUSED" class="pause-title" />
+                <ui:Label text="SYSTEM INTERRUPT DETECTED" class="pause-subtitle" />
+            </ui:VisualElement>
+            
+            <ui:VisualElement class="ascii-divider" />
+            
+            <ui:VisualElement class="button-group">
+                <ui:Button name="ResumeButton" text="RESUME_SESSION" class="pause-button" />
+                <ui:Button name="OptionsButton" text="SYSTEM_CONFIG" class="pause-button" />
+                <ui:Button name="QuitButton" text="TERMINATE_GAME" class="pause-button" />
+            </ui:VisualElement>
+            
+            <ui:VisualElement class="ascii-divider" />
+            
+            <ui:Label text="STATUS: STANDBY" class="pause-subtitle" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
